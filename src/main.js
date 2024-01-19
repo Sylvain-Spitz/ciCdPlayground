@@ -21,7 +21,7 @@ new App({
 		// What do you like to do when you're not coding?
 		hobbies: [
 			'play chess', 
-			'do skydiving', 
+			'go surfing', 
 			'do my taxes'
 		]
 	}
