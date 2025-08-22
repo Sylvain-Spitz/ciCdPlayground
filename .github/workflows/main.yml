@@ -4,12 +4,17 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-  
+    inputs:
+      version:
+        description: 'Version tag'
+        required: true
+        type: string
+
 permissions:
   checks: write
   pull-requests: write
   id-token: write
-  contents: read
+  contents: write
   pages: write
 
 jobs:
@@ -30,6 +35,16 @@ jobs:
       run: yarn build
     - name: Integration tests
       run: yarn test:e2e
+    - name: tag commit
+      env:
+        TAG: ${{ github.event.inputs.version }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        git config user.name "github-bot"
+        git config user.email "github-bot@noreply.com"
+        git tag -a "${TAG}" -m "Release ${TAG}"
+        git push origin "refs/tags/${TAG}"
     - name: publishing Test results
       uses: EnricoMi/publish-unit-test-result-action@v2.20.0
       if: always()
