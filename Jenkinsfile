@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     tools {
         nodejs 'yarn'
     }
@@ -67,6 +68,7 @@ pipeline {
                 if (params.DESCRIPTION?.trim()) {
                     currentBuild.description = params.DESCRIPTION
                 }
+                currentBuild.displayName = "CI/CD Workshop Build"
             }
         }
     }
